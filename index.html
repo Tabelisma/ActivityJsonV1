@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <title>Bikes</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg mb-4 top-bar navbar-static-top sps sps--abv">
+        <div class="container">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse1" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand mx-auto" href="#">Bi<span>Kes</span></a>
+        <div class="collapse navbar-collapse" id="navbarCollapse1">
+            <ul id="navdemo" class="navbar-nav ml-auto">
+
+            </ul>
+        </div>
+        </div>
+    </nav>
+
+    <!-- Swiper Silder
+        ================================================== --> 
+    <!-- Slider main container -->
+    <div class="swiper-container main-slider" id="myCarousel">
+        <div class="swiper-wrapper text-warning">
+            <div class="swiper-slide slider-bg-position" style="background:url('img/trek1.jpg')" data-hash="slide1">
+                <h2 class="text-warning">Bike your way to happiness, health, and adventure!</h2>
+            </div>
+            <div class="swiper-slide slider-bg-position" style="background:url('img/Bianchi1.png')" data-hash="slide2">
+                <h2 class="text-warning">Happiness is nothing more than good health and a bad memory</h2>
+            </div>
+            <div class="swiper-slide slider-bg-position" style="background:url('img/bmx1.jpg')" data-hash="slide2">
+                <h2 class="text-warning">Happiness is nothing more than good health and a bad memory</h2>
+            </div>
+            <div class="swiper-slide slider-bg-position" style="background:url('img/fixed1.jpg')" data-hash="slide2">
+                <h2 class="text-warning">Happiness is nothing more than good health and a bad memory</h2>
+            </div>
+            <div class="swiper-slide slider-bg-position" style="background:url('img/fat1.jpg')" data-hash="slide2">
+                <h2 class="text-warning">Happiness is nothing more than good health and a bad memory</h2>
+            </div>
+            <div class="swiper-slide slider-bg-position" style="background:url('img/gravel1.png')" data-hash="slide2">
+                <h2 class="text-warning">Happiness is nothing more than good health and a bad memory</h2>
+            </div>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+        <!-- Add Navigation -->
+        <div class="swiper-button-prev text-warning"><i class="fa fa-chevron-left"></i></div>
+        <div class="swiper-button-next text-warning"><i class="fa fa-chevron-right"></i></div>
+    </div>
+
+    <div id="json">
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.js" integrity="sha512-6DC1eE3AWg1bgitkoaRM1lhY98PxbMIbhgYCGV107aZlyzzvaWCW1nJW2vDuYQm06hXrW0As6OGKcIaAVWnHJw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha512-7rusk8kGPFynZWu26OKbTeI+QPoYchtxsmPeBqkHIEXJxeun4yJ4ISYe7C6sz9wdxeE1Gk3VxsIWgCZTc+vX3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="function.js"></script>
+
+    <script>
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                const myObj = JSON.parse(this.responseText);
+                createDesign(myObj);
+            }
+        }
+        xmlhttp.open("GET", "http://localhost/Act.Bikes/");
+        xmlhttp.send();
+      
+        function createDesign(json)
+        {
+            var i, j, pics, txt, nav;
+            
+            txt = ``;
+            nav = `<li class="nav-item active"> <a class="nav-link text-warning" href="#myCarousel">Home <span class="sr-only">(current)</span></a> </li>`;
+
+
+            for (i = 0; i< json.bike.length; i++) {
+                // console.log(json.bike[i].Specifications.);
+                
+                
+                nav += 
+                `
+                    <li class="nav-item"> <a class="nav-link text-warning" href="#${json.bike[i].Units}">${json.bike[i].Units}</a> </li>
+
+                `;
+                document.getElementById("navdemo").innerHTML = nav;
+
+                
+                txt += 
+                
+                `
+                <section class="service-sec" id="${json.bike[i].Units}">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="heading">
+                                <h2><small>${json.bike[i].Units}</small>${json.bike[i].Model}</h2>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                            <div class="col-md-4">
+                                <h2>Specifications:<br></h2>
+                            </div>
+                            <div class="col-md-8">
+                                `;
+                                var specs = Object.entries(json.bike[i].Specifications); // EX: Object entities "Units" , "Fixie",
+                                for (j = 0; j < specs.length; j++) {
+                                    txt += `
+                                    <div class="col-md-12">
+                                        <h5>${specs[j][0]}: </h5>
+                                        <ul>
+                                            <li>${specs[j][1]}</li>
+                                        </ul>
+                                    </div>
+                                    `;
+                                }
+                                txt +=`
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row blog">
+                                <div class="col-md-12">
+                                    <div id="blogCarousel${i}" class="carousel slide" data-ride="carousel">
+
+                                        <ol class="carousel-indicators">
+                                            <li data-target="#blogCarousel${i}" data-slide-to="0" class="active"></li>
+                                            <li data-target="#blogCarousel${i}" data-slide-to="1"></li>
+                                        </ol>
+                                        <!-- Carousel items -->
+                                            <div class="carousel-inner">
+                                                <div class="carousel-item active">
+                                                    <div class="row">
+                                        `;
+                                        for (pics = 0; pics < json.bike[i].Pics.length; pics++) {
+                                            if(pics === 4){
+                                                break;
+                                            }
+                                            else{
+                                                txt += `
+                                                <div class="col-md-3">
+                                                    <img src="img/${json.bike[i].Pics[pics]}" alt="${json.bike[i].Pics[pics]}" style="max-width:100%;">
+                                                </div>
+                                            `;   
+                                            }
+                                            
+                                        }
+
+
+                                        txt +=`
+                                            </div>
+                                            <!--.row-->
+                                        </div>
+                                        <!--.item-->
+
+                                        <div class="carousel-item">
+                                            <div class="row">`;
+                                            for (pics2 = 3; pics2 <  json.bike[i].Pics.length; pics2++) {
+                                                txt +=`
+                                                    <div class="col-md-3">
+                                                        <img src="img/${json.bike[i].Pics[pics2]}" alt="Image" style="max-width:100%;">
+                                                    </div>
+                                                `;
+                                            }
+                                                
+                                        txt += `
+                                            </div>
+                                            <!--.row-->
+                                        </div>
+                                        <!--.item-->
+                                        </div>
+                                        <!--.carousel-inner-->
+                                    </div>
+                                    <!--.Carousel-->
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.row --> 
+                        </div>
+                    </section>
+                `;
+                document.getElementById("json").innerHTML = txt;
+                
+            }
+        }
+    </script>
+</body>
+</html>
